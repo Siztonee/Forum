@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\Other;
 
 use Closure;
 use Carbon\Carbon;
@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class GuestMiddleware
+class UpdateLastSeen
 {
     /**
      * Handle an incoming request.
@@ -17,8 +17,8 @@ class GuestMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check()) {            
-            return redirect()->back();
+        if (Auth::check()) {
+            Auth::user()->update(['last_seen' => Carbon::now()]);
         }
 
         return $next($request);

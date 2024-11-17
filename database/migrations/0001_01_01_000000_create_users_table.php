@@ -23,6 +23,10 @@ return new class extends Migration
 
             $table->rememberToken();
 
+            $table->string('google_id')->nullable();
+            $table->string('github_id')->nullable();
+
+            $table->timestamp('last_seen')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
