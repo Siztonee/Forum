@@ -21,7 +21,7 @@
             <div class="text-gray-400">Сообщений</div>
         </div>
         <div class="bg-gray-800 shadow-md rounded-lg p-4">
-            <div class="text-xl font-semibold text-gray-100">0</div>
+            <div class="text-xl font-semibold text-gray-100">{{ $usersTotal }}</div>
             <div class="text-gray-400">Пользователей</div>
         </div>
     </div>
@@ -29,7 +29,9 @@
     <!-- Категории форума -->
     <div class="bg-gray-800 shadow-md rounded-lg">
         <div class="border-b border-gray-700 p-4">
-            <h2 class="text-lg font-semibold text-gray-100">Категории форума</h2>
+            <h2 class="text-lg font-semibold text-gray-100">
+                <a href="{{ route('categories') }}">Категории форума</a>
+            </h2>
         </div>
         <div class="divide-y divide-gray-700">
             <div class="p-4 hover:bg-gray-700 transition">

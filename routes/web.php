@@ -5,10 +5,13 @@ use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\GuestMiddleware;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\ModeratorMiddleware;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Middleware\Other\UpdateLastSeen;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\Staff\CreateCategoryController;
 
 
 Route::middleware([UpdateLastSeen::class])->group(function () {
@@ -16,6 +19,7 @@ Route::middleware([UpdateLastSeen::class])->group(function () {
     
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/profile/{username}', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/categories', [CategoriesController::class, 'index'])->name('categories');
 
 
     Route::middleware([GuestMiddleware::class])->group( function() {
@@ -41,4 +45,11 @@ Route::middleware([UpdateLastSeen::class])->group(function () {
         });
 
     });
+
+
+    Route::middleware([ModeratorMiddleware::class])->group(function () {
+        Route::get('/create-category', [CreateCategoryController::class, 'index'])->name('category.create');
+        Route::post('/create-category', [CreateCategoryController::class, 'store'])->name('category.store');
+    });
+
 });

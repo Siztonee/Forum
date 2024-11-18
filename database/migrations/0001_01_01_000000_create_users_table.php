@@ -21,6 +21,8 @@ return new class extends Migration
 
             $table->enum('role', ['user', 'moderator', 'admin'])->default('user');
 
+            $table->integer('reputation')->default(0);
+
             $table->rememberToken();
 
             $table->string('google_id')->nullable();
