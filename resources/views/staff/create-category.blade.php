@@ -37,7 +37,7 @@
                 <div class="mb-6">
                     <label for="color" class="block text-white mb-2">Цвет категории</label>
                     <input type="color" 
-                        name="color" 
+                        name="bg_color" 
                         id="color"
                         value="#3B82F6"
                         class="w-full h-12 bg-gray-700 rounded-lg">
@@ -48,7 +48,8 @@
                     <div class="space-y-2">
                         <label class="flex items-center text-white">
                             <input type="checkbox" 
-                                name="is_private" 
+                                name="access" 
+                                value="moderator"
                                 class="mr-2 bg-gray-700 text-blue-500 focus:ring-blue-500">
                             Модератор и выше
                         </label>

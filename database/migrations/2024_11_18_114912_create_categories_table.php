@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('icon');
             $table->string('bg_color');
+            $table->string('slug');
 
             $table->enum('access', ['user', 'moderator', 'admin'])->default('user');
 

@@ -10,7 +10,7 @@
 
             <!-- Desktop Navigation -->
             <div class="hidden sm:flex sm:items-center sm:space-x-8">
-                <a href="#" class="text-gray-300 hover:text-gray-100">Форумы</a>
+                <a href="{{ route('categories') }}" class="text-gray-300 hover:text-gray-100">Форумы</a>
                 <a href="#" class="text-gray-300 hover:text-gray-100">Пользователи</a>
                 @auth
                     <a href="{{ route('profile', auth()->user()->username) }}" class="text-gray-300 hover:text-gray-100">Профиль</a>
@@ -39,7 +39,7 @@
         <!-- Mobile Navigation -->
         <div class="mobile-menu hidden sm:hidden">
             <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="#" class="block px-3 py-2 rounded-md text-gray-300 hover:text-gray-100 hover:bg-gray-700">Форумы</a>
+                <a href="{{ route('categories') }}" class="block px-3 py-2 rounded-md text-gray-300 hover:text-gray-100 hover:bg-gray-700">Форумы</a>
                 <a href="#" class="block px-3 py-2 rounded-md text-gray-300 hover:text-gray-100 hover:bg-gray-700">Пользователи</a>
                 @auth
                     <a href="{{ route('profile', auth()->user()->username) }}" class="block px-3 py-2 rounded-md text-gray-300 hover:text-gray-100 hover:bg-gray-700">Профиль</a>

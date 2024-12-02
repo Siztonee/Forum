@@ -4,13 +4,18 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\GuestMiddleware;
+use App\Http\Controllers\TopicController;
+use App\Http\Controllers\TopicsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\ModeratorMiddleware;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Middleware\Other\UpdateLastSeen;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\SendMessageController;
+use App\Http\Controllers\UploadImageController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\Staff\CreateTopicController;
 use App\Http\Controllers\Staff\CreateCategoryController;
 
 
@@ -20,7 +25,17 @@ Route::middleware([UpdateLastSeen::class])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/profile/{username}', [ProfileController::class, 'index'])->name('profile');
     Route::get('/categories', [CategoriesController::class, 'index'])->name('categories');
+    Route::get('/{slug}/topics', [TopicsController::class, 'index'])->name('category.topics');
+    Route::get('/{c_slug}/topic/{t_slug}', [TopicController::class, 'index'])->name('category.topic');
 
+    Route::get('/privacy-policy', function () {
+        return view('privacy-policy');
+    });
+
+    Route::get('/terms-of-service', function () {
+        return view('terms-of-service');
+    });
+    
 
     Route::middleware([GuestMiddleware::class])->group( function() {
         Route::get('/auth', [AuthController::class, 'index'])->name('auth');
@@ -35,21 +50,16 @@ Route::middleware([UpdateLastSeen::class])->group(function () {
 
     Route::middleware([AuthMiddleware::class])->group(function () {
         Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
-
-        Route::get('/privacy-policy', function () {
-            return view('privacy-policy');
-        });
-
-        Route::get('/terms-of-service', function () {
-            return view('terms-of-service');
-        });
-
+        Route::get('/{slug}/create-topic', [CreateTopicController::class, 'index'])->name('category.topics.create');
+        Route::post('/create-topic', [CreateTopicController::class, 'store'])->name('category.topics.store');
+        Route::post('/send-message', SendMessageController::class)->name('message.send');
     });
 
 
     Route::middleware([ModeratorMiddleware::class])->group(function () {
         Route::get('/create-category', [CreateCategoryController::class, 'index'])->name('category.create');
         Route::post('/create-category', [CreateCategoryController::class, 'store'])->name('category.store');
+
     });
 
 });

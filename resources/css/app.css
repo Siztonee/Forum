@@ -1,7 +1,28 @@
 @import '@fortawesome/fontawesome-free/css/all.css';
 
+@import "quill/dist/quill.core.css";
+@import "quill/dist/quill.snow.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
+.ql-toolbar button .ql-stroke {
+    stroke: white;
+}
+
+.ql-toolbar button .ql-fill {
+    fill: white;
+}
+
+.ql-toolbar button:hover .ql-stroke,
+.ql-toolbar button:focus .ql-stroke {
+    stroke: #1e90ff; 
+}
+
+.ql-toolbar button:hover .ql-fill,
+.ql-toolbar button:focus .ql-fill {
+    fill: #1e90ff; 
+}
 

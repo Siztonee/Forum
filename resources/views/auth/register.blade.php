@@ -79,8 +79,8 @@
                     </div>
                     <div class="ml-3">
                         <label for="terms" class="text-sm text-gray-300">
-                            Я соглашаюсь с <a href="#" class="text-indigo-400 hover:text-indigo-300">правилами форума</a>
-                            и <a href="#" class="text-indigo-400 hover:text-indigo-300">политикой конфиденциальности</a>
+                            Я соглашаюсь с <a href="/terms-of-service" class="text-indigo-400 hover:text-indigo-300">правилами форума</a>
+                            и <a href="/privacy-policy" class="text-indigo-400 hover:text-indigo-300">политикой конфиденциальности</a>
                         </label>
                     </div>
                 </div>

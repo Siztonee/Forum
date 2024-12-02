@@ -24,7 +24,8 @@ class CreateCategoryRequest extends FormRequest
         return [
             'name' => 'required|min:3|max:95',
             'icon' =>'required',
-            'bg_color' => 'required'
+            'bg_color' => 'required',
+            'access' => 'nullable',
         ];
     }
 }

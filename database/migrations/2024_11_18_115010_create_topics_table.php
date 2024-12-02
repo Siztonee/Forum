@@ -24,7 +24,13 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
+            // $table->foreignId('message_id')
+            //     ->constrained('messages')
+            //     ->cascadeOnUpdate()
+            //     ->cascadeOnDelete();
+
             $table->string('name');
+            $table->string('slug');
 
             $table->timestamps();
         });
