@@ -3,117 +3,64 @@
 @section('title', 'Главная')
 
 @section('content')
-<div class="space-y-6 bg-gray-900 text-gray-300">
-    <!-- Приветственный баннер -->
-    <div class="bg-gray-800 shadow-md rounded-lg p-6">
-        <h1 class="text-2xl font-bold text-gray-100 mb-2">Добро пожаловать на форум</h1>
-        <p class="text-gray-400">Присоединяйтесь к нашему сообществу для обсуждения интересных тем</p>
+<div class="container mx-auto px-4 py-6 space-y-6 text-gray-300">
+    <!-- Приветственный баннер с легким неоновым эффектом -->
+    <div class="bg-gray-900 border border-indigo-500/30 rounded-lg p-6 shadow-lg shadow-indigo-500/20 
+                transition hover:shadow-indigo-500/40">
+        <h1 class="text-3xl font-bold text-indigo-300 mb-3 
+                   drop-shadow-[0_0_5px_rgba(99,102,241,0.5)]">
+            Добро пожаловать на форум
+        </h1>
+        <p class="text-gray-400 text-base">
+            Присоединяйтесь к нашему сообществу для обсуждения интересных тем и знакомств
+        </p>
     </div>
 
-    <!-- Статистика -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="bg-gray-800 shadow-md rounded-lg p-4">
-            <div class="text-xl font-semibold text-gray-100">{{ $topicsCount }}</div>
-            <div class="text-gray-400">Тем</div>
-        </div>
-        <div class="bg-gray-800 shadow-md rounded-lg p-4">
-            <div class="text-xl font-semibold text-gray-100">{{ $messagesCount }}</div>
-            <div class="text-gray-400">Сообщений</div>
-        </div>
-        <div class="bg-gray-800 shadow-md rounded-lg p-4">
-            <div class="text-xl font-semibold text-gray-100">{{ $usersTotal }}</div>
-            <div class="text-gray-400">Пользователей</div>
-        </div>
+    <!-- Статистика с неоновыми карточками -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        @foreach([
+            ['count' => $stats['topicsCount'], 'label' => 'Тем', 'color' => 'blue'],
+            ['count' => $stats['messagesCount'], 'label' => 'Сообщений', 'color' => 'green'],
+            ['count' => $stats['usersTotal'], 'label' => 'Пользователей', 'color' => 'purple']
+        ] as $stat)
+            @include('components.stat-card', $stat)
+        @endforeach
     </div>
 
-    <!-- Категории форума -->
-    <div class="bg-gray-800 shadow-md rounded-lg">
-        <div class="border-b border-gray-700 p-4">
-            <h2 class="text-lg font-semibold text-gray-100">
+    <!-- Секция категорий -->
+    <div class="bg-gray-900 rounded-lg shadow-md overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-800">
+            <h2 class="text-xl font-semibold text-gray-100 
+                       hover:text-indigo-300 transition">
                 <a href="{{ route('categories') }}">Категории форума</a>
             </h2>
         </div>
-        <div class="divide-y divide-gray-700">
-            <div class="p-4 hover:bg-gray-700 transition">
-                @if ($lastCategory) 
-                <div class="flex items-start space-x-4">
-                    <div class="flex-shrink-0">
-                        <div class="w-16 h-16 rounded-full flex items-center justify-center" 
-                            style="background-color: {{ $lastCategory->bg_color }}">
-
-                            <i class="fas {{ $lastCategory->icon ?? '' }} text-3xl text-blue-300"></i>
-
-                        </div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <a href="{{ route('category.topics', $lastCategory->slug) }}" class="text-lg font-medium text-indigo-400 hover:text-indigo-300">
-                            {{ $lastCategory->name }}
-                        </a>
-                        <p class="mt-1 text-sm text-gray-400">
-                            <a href="{{ route('profile', $lastCategory->creator->username) }}" class="text-indigo-400">
-                                {{ $lastCategory->creator->username }}
-                            </a>
-                        </p>
-                        <div class="mt-2 flex items-center space-x-4 text-sm text-gray-500">
-                            <div>{{ $lastCategory->topics_count }} тем</div>
-                            <div>{{ $lastCategory->messages_count }} сообщений</div>
-                        </div>
-                    </div>
-                    <div class="hidden sm:block flex-shrink-0 text-sm text-gray-500">
-                        <div>Последнее сообщение</div>
-                        <div class="mt-1">от 
-                            <span class="text-indigo-400">
-                                <a href="{{ route('profile', $lastCategory->creator->username) }}">
-                                    {{ $lastMessage->sender->username }}
-                                </a>
-                            </span>
-                        </div>
-                        <div>{{ $lastMessage->created_at->diffForHumans() }}</div>
-                    </div>
-                </div>
-                @endif
+        
+        @forelse ($lastCategories as $category)
+            <div class="border-t border-gray-800 hover:bg-gray-800/50 transition">
+                <x-category-item :category="$category" />
             </div>
-        </div>
+        @empty
+            <div class="p-4 text-gray-500">Категории не найдены</div>
+        @endforelse
     </div>
 
     <!-- Последние обсуждения -->
-    <div class="bg-gray-800 shadow-md rounded-lg">
-        <div class="border-b border-gray-700 p-4">
-            <h2 class="text-lg font-semibold text-gray-100">Последние обсуждения</h2>
+    <div class="bg-gray-900 rounded-lg shadow-md">
+        <div class="px-6 py-4 border-b border-gray-800">
+            <h2 class="text-xl font-semibold text-gray-100">
+                Последние обсуждения
+            </h2>
         </div>
-        <div class="divide-y divide-gray-700">
-            <div class="p-4 hover:bg-gray-700 transition">
-                @if ($lastTopic)
-                <div class="flex items-start space-x-4">
-                    <div class="flex-shrink-0">
-                        <img class="h-10 w-10 rounded-full" src="{{ $lastTopic->creator->profile_image }}" 
-                            alt="{{ $lastTopic->creator->username }}">
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <a href="{{ route('category.topic', [$lastTopic->category->slug, $lastTopic->slug]) }}" class="text-base font-medium text-indigo-400 hover:text-indigo-300">
-                            {{ $lastTopic->name }}
-                        </a>
-                        <div class="mt-1 flex items-center space-x-2 text-sm text-gray-500">
-                            <span>
-                                <a href="{{ route('profile', $lastTopic->creator->username) }}" class="text-indigo-400">
-                                    {{ $lastTopic->creator->username }}
-                                </a>
-                            </span>
-                            <span>•</span>
-                            <span>{{ $lastTopic->created_at->diffForHumans() }}</span>
-                            <span>•</span>
-                            <span>{{ $lastTopic->messages_count }} ответов</span>
-                        </div>
-                    </div>
-                </div>
-                @endif
-            </div>
-        </div>
+        
+        @forelse ($lastTopics as $topic)
+            <x-topic-item :topic="$topic" />
+        @empty
+            <div class="p-4 text-gray-500">Темы не найдены</div>
+        @endforelse
     </div>
 
     <!-- Онлайн пользователи -->
     <livewire:online-users />
-
-
 </div>
 @endsection

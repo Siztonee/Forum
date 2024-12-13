@@ -26,7 +26,9 @@ class ProfileController extends Controller
             ];
         });
 
-        $lastMessage = Message::where('sender_id', $user->id)->latest()->first();
+        $lastMessage = Message::where('sender_id', $user->id)
+            ->latest()
+            ->first();
 
         return view('profile', [
             'user' => $user,

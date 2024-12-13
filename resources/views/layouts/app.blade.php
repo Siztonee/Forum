@@ -13,12 +13,12 @@
     <link rel="stylesheet" href="{{ asset('css/notification.css') }}">
 
 </head>
-<body class="bg-gray-900 min-h-screen">
+<body class="bg-gray-950 flex flex-col min-h-screen">
     <!-- Header -->
     @include('layouts.header')
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="container mx-auto px-4 sm:px-6 lg:px-4 py-8">
         @if (session('info'))
             <div id="notification" data-message="{{ session('info') }}"></div>
         @endif

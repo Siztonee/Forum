@@ -22,20 +22,18 @@ class HomeController extends Controller
             ];
         });
 
-        $lastCategory = Category::latest()
-            ->withCount(['topics', 'topics as messages_count' => fn($query) => $query->withCount('messages')])
-            ->first();
+        $lastCategories = Category::latest()
+            ->take(5) 
+            ->get();  
 
-        $lastMessage = Message::latest()->first();
-        $lastTopic = Topic::latest()->withCount('messages')->first();
+        $lastTopics = Topic::latest()
+            ->take(5)
+            ->get();
 
         return view('home', [
-            'usersTotal' => $stats['usersTotal'],
-            'topicsCount' => $stats['topicsCount'],
-            'messagesCount' => $stats['messagesCount'],
-            'lastCategory' => $lastCategory,
-            'lastMessage' => $lastMessage,
-            'lastTopic' => $lastTopic,
+            'stats' => $stats,
+            'lastCategories' => $lastCategories,
+            'lastTopics' => $lastTopics,
         ]);
     }
 }

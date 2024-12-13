@@ -53,4 +53,9 @@ class Category extends Model
         return $slug;
     }
 
+    public static function topicsCount($categoryId)
+    {
+        return Topic::where('category_id', $categoryId)->count();
+    }
+
 }

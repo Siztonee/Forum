@@ -7,6 +7,7 @@ use App\Models\Message;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,7 +38,7 @@ class Topic extends Model
         return $this->hasMany(Message::class);
     }
 
-    public function lastMessage()
+    public function lastMessage(): HasOne
     {
         return $this->hasOne(Message::class)->latestOfMany();
     }
@@ -56,4 +57,11 @@ class Topic extends Model
 
         return $slug;
     }
+
+    public static function messagesCount($topicId)
+    {
+        return Message::where('topic_id', $topicId)->count() - 1;
+    }
+
+
 }
