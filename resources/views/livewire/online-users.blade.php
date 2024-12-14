@@ -4,7 +4,7 @@
         @forelse ($onlineUsers as $user)
             <a href="{{ route('profile', $user->username) }}" class="inline-flex items-center space-x-2">
                 <img class="h-6 w-6 rounded-full" src="{{ $user->profile_image }}" alt="">
-                <span class="text-sm text-indigo-400 hover:text-indigo-300">{{ $user->username }}</span>
+                <x-username :user="$user" class="text-sm" />
             </a>
         @empty
             <p>0</p>

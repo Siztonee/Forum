@@ -32,13 +32,15 @@
                                 <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-start mb-2">
                                     <h2 class="text-lg sm:text-xl font-semibold text-white sm:mr-3 mb-2 sm:mb-0">{{ $category->name ?? 'Имя' }}</h2>
                                     
-                                    <a href="#" 
+                                    <a href="{{ route('category.settings', $category->slug) }}" 
                                     class="text-gray-400 hover:text-white transition-colors hidden sm:block">
                                         <i class="fas fa-cog"></i>
                                     </a>
                                 </div>
                                 
-                                <p class="text-gray-400 mb-3 text-sm">{{ $category->creator->username ?? 'Описание' }}</p>
+                                <p class="text-gray-400 mb-3 text-sm">
+                                    <x-username :user="$category->creator"/>
+                                </p>
                                 
                                 <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-start space-y-2 sm:space-y-0 sm:space-x-4 text-xs sm:text-sm text-gray-500">
                                     <span class="mr-4 sm:mr-0">

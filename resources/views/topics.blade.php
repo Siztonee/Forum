@@ -51,7 +51,7 @@
                             <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-start text-xs sm:text-sm text-gray-400 space-y-2 sm:space-y-0 sm:space-x-4">
                                 <span class="mr-4 sm:mr-0">
                                     <i class="fas fa-user mr-1"></i>
-                                    {{ $topic->creator->username }}
+                                    <x-username :user="$topic->creator"/>
                                 </span>
                                 <span class="mr-4 sm:mr-0">
                                     <i class="fas fa-clock mr-1"></i>

@@ -19,7 +19,9 @@
                     <div class="flex-1 text-center md:text-left">
                         <div class="flex flex-col md:flex-row items-center justify-center md:justify-start md:space-x-4">
                             <div class="flex items-center space-x-2">
-                                <h1 class="text-2xl font-bold text-white">{{ $user->username }}</h1>
+                                <h1 class="text-2xl font-bold text-white">
+                                    <x-username :user="$user"/>
+                                </h1>
                                 <span class="px-3 py-1 rounded-full text-sm font-medium bg-blue-900 text-blue-200">
                                     {{ $user->role }}
                                 </span>
@@ -86,7 +88,7 @@
             <!-- Последние сообщения -->
             <div class="bg-gray-900 rounded-lg shadow-lg p-6">
                 <h2 class="text-xl font-semibold text-white mb-4">Последнее сообщение</h2>
-                <div class="p-4 hover:bg-gray-700 transition border-t border-gray-700">
+                <div class="p-4 hover:bg-gray-800 transition border-t border-gray-700">
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0">
                             <img class="h-10 w-10 rounded-full object-cover" 

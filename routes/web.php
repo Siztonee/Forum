@@ -17,6 +17,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Staff\CreateTopicController;
 use App\Http\Controllers\Staff\CreateCategoryController;
+use App\Http\Controllers\Staff\CategorySettingsController;
 
 
 Route::middleware([UpdateLastSeen::class])->group(function () {
@@ -59,7 +60,10 @@ Route::middleware([UpdateLastSeen::class])->group(function () {
     Route::middleware([ModeratorMiddleware::class])->group(function () {
         Route::get('/create-category', [CreateCategoryController::class, 'index'])->name('category.create');
         Route::post('/create-category', [CreateCategoryController::class, 'store'])->name('category.store');
-
+        Route::get('/{slug}/settings', [CategorySettingsController::class, 'index'])->name('category.settings');
+        Route::put('/{slug}/settings', [CategorySettingsController::class, 'store'])->name('category.settings.store');
+        Route::delete('/{slug}/clear', [CategorySettingsController::class, 'clear'])->name('category.clear');
+        Route::delete('/{slug}/delete', [CategorySettingsController::class, 'delete'])->name('category.delete');
     });
 
 });

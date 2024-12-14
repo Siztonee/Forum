@@ -17,7 +17,7 @@
             Создатель: 
             <a href="{{ route('profile', $category->creator->username) }}" 
             class="text-indigo-400">
-                {{ $category->creator->username }}
+                <x-username :user="$category->creator"/>
             </a>
         </div>
     </div>

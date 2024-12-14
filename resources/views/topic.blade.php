@@ -20,10 +20,9 @@
                             alt="{{ $topic->creator->username }}" 
                             class="w-12 h-12 rounded-full mr-4 object-cover">
                         <div>
-                            <h1 class="text-2xl font-bold text-white">{{ $topic->title }}</h1>
+                            <x-username :user="$topic->creator"/>
                             <div class="text-gray-400 text-sm">
-                                {{ $topic->creator->username }} 
-                                · {{ $topic->created_at->diffForHumans() }}
+                                {{ $topic->created_at->diffForHumans() }}
                                 · {{ $topic->views_count ?? 0 }} просмотров
                             </div>
                         </div>
@@ -52,9 +51,7 @@
                         
                         <div class="flex-grow">
                             <div class="flex items-center mb-2">
-                                <span class="font-semibold text-white mr-2">
-                                    {{ $message->sender->username }}
-                                </span>
+                                <x-username :user="$message->sender"/>
                                 <span class="text-gray-400 text-sm ml-2">
                                     {{ $message->created_at->diffForHumans() }}
                                 </span>
@@ -78,8 +75,8 @@
                     </div>
                 </div>
                 @empty
-                <div class="text-center bg-gray-800 rounded-lg p-8">
-                    <p class="text-gray-400">Пока нет комментариев. Будьте первым!</p>
+                <div class="text-center bg-gray-900 rounded-lg p-8">
+                    <p class="text-gray-400">Пока нет ответов. Будьте первым!</p>
                 </div>
                 @endforelse
             </div>
@@ -98,7 +95,7 @@
                         <div class="mb-6">
                             <label for="message" class="block text-white mb-2">Сообщение</label>
                             <input type="hidden" name="message" id="hidden-message">
-                            <div id="editor" class="w-full bg-gray-700 border-2 border-gray-600 rounded-lg px-4 py-2 text-white" style="height: 300px;"></div>
+                            <div id="editor" class="w-full bg-gray-800 border-2 border-gray-700 rounded-lg px-4 py-2 text-white" style="height: 300px;"></div>
                         </div>
 
                         <div class="flex justify-between items-center mt-4">
