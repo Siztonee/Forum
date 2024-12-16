@@ -57,19 +57,7 @@ Route::middleware([UpdateLastSeen::class])->group(function () {
         Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
         Route::get('/{slug}/create-topic', [CreateTopicController::class, 'index'])->name('category.topics.create');
         Route::post('/create-topic', [CreateTopicController::class, 'store'])->name('category.topics.store');
-        Route::post('/send-message', SendMessageController::class)->name('message.send');
-        Route::post('/reaction', [ReactionController::class, 'store'])->name('message.reaction');
-        Route::delete('/reaction', [ReactionController::class, 'delete'])->name('message.reaction.delete');
-
-        Route::get('/messages/{message}/reactions', function (Message $message) {
-            $reactions = $message->reactions()
-                ->select('reaction', DB::raw('count(*) as count'))
-                ->groupBy('reaction')
-                ->get();
-        
-            return response()->json(['reactions' => $reactions]);
-        });
-        
+        Route::post('/send-message', SendMessageController::class)->name('message.send');        
     });
 
 

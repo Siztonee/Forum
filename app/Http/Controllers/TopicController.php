@@ -16,7 +16,12 @@ class TopicController extends Controller
             $topic = Topic::with(['category', 'messages'])
                 ->where('slug', $t_slug)
                 ->firstOrFail();
-            
+
+            if (!session()->has("viewed_topics.{$topic->id}")) {
+                $topic->increment('views');
+                session()->put("viewed_topics.{$topic->id}", true);
+            }
+
             $category = $topic->category;
             
             $allMessages = $topic->messages()->orderBy('created_at', 'ASC')->get();

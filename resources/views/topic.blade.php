@@ -23,15 +23,16 @@
                             <x-username :user="$topic->creator"/>
                             <div class="text-gray-400 text-sm">
                                 {{ $topic->created_at->diffForHumans() }}
-                                · {{ $topic->views_count ?? 0 }} просмотров
+                                · {{ $topic->views }} просмотров
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Основной контент топика -->
-                <div class="prose prose-invert max-w-none text-gray-300">
+                <div class="prose prose-invert max-w-none text-gray-300 break-words">
                     {!! $authorMessage->message !!}
+                    <livewire:message-reactions :message="$authorMessage"/>
                 </div>
                 
             </div>

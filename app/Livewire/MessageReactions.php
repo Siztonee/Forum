@@ -10,10 +10,15 @@ class MessageReactions extends Component
 {
     public $message;
     public $reactions;
+    public $emojis;
 
     public function mount($message)
     {
         $this->message = $message;
+
+        $emojisData = json_decode(file_get_contents(resource_path('json/emojis.json')), true);
+        $this->emojis = $emojisData['emojis'];
+        
         $this->loadReactions();
     }
 

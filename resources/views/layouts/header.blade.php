@@ -12,7 +12,7 @@
                 @auth
                     <div class="relative group">
                         <img 
-                            src="{{ auth()->user()->profile_image }}" 
+                            src="{{ asset(auth()->user()->profile_image) }}" 
                             alt="Profile" 
                             class="w-10 h-10 rounded-full cursor-pointer transition-transform duration-300 group-hover:scale-110 ring-2 ring-indigo-500 ring-opacity-50"
                         >
