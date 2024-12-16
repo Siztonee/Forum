@@ -71,12 +71,15 @@
                                     <i class="fas fa-flag mr-1"></i> Жалоба
                                 </button>
                             </div>
+
+                            <livewire:message-reactions :message="$message" />
+
                         </div>
                     </div>
                 </div>
                 @empty
                 <div class="text-center bg-gray-900 rounded-lg p-8">
-                    <p class="text-gray-400">Пока нет ответов. Будьте первым!</p>
+                    <p class="text-gray-400">Ответов пока нет. Будьте первым!</p>
                 </div>
                 @endforelse
             </div>
@@ -130,6 +133,7 @@
                                 alert(`Репорт комментария ${commentId}`);
                             }
                             </script>
+
                     @endpush
 
                 @else

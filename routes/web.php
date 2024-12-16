@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Message;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\HomeController;
@@ -7,6 +9,7 @@ use App\Http\Middleware\GuestMiddleware;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\TopicsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReactionController;
 use App\Http\Middleware\ModeratorMiddleware;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Middleware\Other\UpdateLastSeen;
@@ -18,6 +21,7 @@ use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Staff\CreateTopicController;
 use App\Http\Controllers\Staff\CreateCategoryController;
 use App\Http\Controllers\Staff\CategorySettingsController;
+
 
 
 Route::middleware([UpdateLastSeen::class])->group(function () {
@@ -54,6 +58,18 @@ Route::middleware([UpdateLastSeen::class])->group(function () {
         Route::get('/{slug}/create-topic', [CreateTopicController::class, 'index'])->name('category.topics.create');
         Route::post('/create-topic', [CreateTopicController::class, 'store'])->name('category.topics.store');
         Route::post('/send-message', SendMessageController::class)->name('message.send');
+        Route::post('/reaction', [ReactionController::class, 'store'])->name('message.reaction');
+        Route::delete('/reaction', [ReactionController::class, 'delete'])->name('message.reaction.delete');
+
+        Route::get('/messages/{message}/reactions', function (Message $message) {
+            $reactions = $message->reactions()
+                ->select('reaction', DB::raw('count(*) as count'))
+                ->groupBy('reaction')
+                ->get();
+        
+            return response()->json(['reactions' => $reactions]);
+        });
+        
     });
 
 

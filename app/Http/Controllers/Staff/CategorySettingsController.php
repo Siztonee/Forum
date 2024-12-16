@@ -18,9 +18,7 @@ class CategorySettingsController extends Controller
     {
         $category = $this->getCategoryBySlug($slug);
 
-        return view('staff.category-settings', [
-            'category' => $category,
-        ]);
+        return view('staff.category-settings', compact('category'));
     }
 
     public function store($slug, CategorySettingsRequest $request)
