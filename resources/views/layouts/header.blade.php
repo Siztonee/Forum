@@ -10,6 +10,7 @@
             
             <div class="flex items-center space-x-4">
                 @auth
+                    <a class="text-gray-300 hover:text-gray-100 px-2" href="{{ route('notifications') }}">Уведомления</a>
                     <div class="relative group">
                         <img 
                             src="{{ asset(auth()->user()->profile_image) }}" 
@@ -30,9 +31,8 @@
                             </div>
                         </div>
                     </div>
-                    <x-username :user="auth()->user()"/>
                 @else
-                    <a href="{{ route('auth') }}" class="text-gray-300 hover:text-gray-100 px-3 py-2 rounded-md transition-colors">Вход</a>
+                    <a href="{{ route('auth') }}" class="text-gray-300   px-3 py-2 rounded-md transition-colors">Вход</a>
                 @endauth
             </div>
         </div>

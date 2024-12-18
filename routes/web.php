@@ -17,6 +17,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\SendMessageController;
 use App\Http\Controllers\UploadImageController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Staff\CreateTopicController;
 use App\Http\Controllers\Staff\CreateCategoryController;
@@ -57,7 +58,8 @@ Route::middleware([UpdateLastSeen::class])->group(function () {
         Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
         Route::get('/{slug}/create-topic', [CreateTopicController::class, 'index'])->name('category.topics.create');
         Route::post('/create-topic', [CreateTopicController::class, 'store'])->name('category.topics.store');
-        Route::post('/send-message', SendMessageController::class)->name('message.send');        
+        Route::post('/send-message', SendMessageController::class)->name('message.send');     
+        Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications');   
     });
 
 

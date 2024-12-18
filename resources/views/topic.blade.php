@@ -51,11 +51,20 @@
                             class="w-10 h-10 rounded-full mr-4 object-cover">
                         
                         <div class="flex-grow">
-                            <div class="flex items-center mb-2">
-                                <x-username :user="$message->sender"/>
+                            <div class="flex items-center">
+                                <x-username :user="$message->sender" data-user-id="{{ $message->sender->id }}"/>
                                 <span class="text-gray-400 text-sm ml-2">
                                     {{ $message->created_at->diffForHumans() }}
                                 </span>
+                            </div>
+
+                            <div class="mb-3">
+                                @if($message->receiver)
+                                    <span class="text-gray-400 text-sm">
+                                        ответ для 
+                                        <x-username :user="$message->receiver"/>
+                                    </span>
+                                @endif
                             </div>
                             
                             <div class="prose prose-invert max-w-none text-gray-300">
@@ -64,7 +73,9 @@
                             
                             <!-- Действия с комментарием -->
                             <div class="mt-4 flex items-center space-x-4 text-gray-400">
-                                <button class="hover:text-white" onclick="replyToMessage({{ $message->id }})">
+                                <button 
+                                    onclick="replyToMessage({{ $message->id }})" 
+                                    class="hover:text-white">
                                     <i class="fas fa-reply mr-1"></i> Ответить
                                 </button>
                                 
@@ -72,9 +83,8 @@
                                     <i class="fas fa-flag mr-1"></i> Жалоба
                                 </button>
                             </div>
-
+            
                             <livewire:message-reactions :message="$message" />
-
                         </div>
                     </div>
                 </div>
@@ -119,21 +129,11 @@
                     @push('scripts')
                         @vite(['resources/js/quill.js'])
 
-                        <script>
-                            function replyToMessage(messageId) {
-                                const commentTextarea = document.querySelector('#editor');
-                                const message = document.getElementById(`message-${messageId}`);
-                                const authorName = message.querySelector('.font-semibold').textContent.trim();
-                                
-                                commentTextarea.value = `@${authorName} `;
-                                commentTextarea.focus();
-                            }
-                        
+                        <script>                 
                             function reportMessage(commentId) {
-                                // Логика открытия модального окна для жалобы
                                 alert(`Репорт комментария ${commentId}`);
                             }
-                            </script>
+                        </script>
 
                     @endpush
 
