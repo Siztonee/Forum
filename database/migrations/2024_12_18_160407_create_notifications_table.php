@@ -15,17 +15,20 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('sender_id')
-                ->constrained()
+                ->constrained('users')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
             $table->foreignId('receiver_id')
-                ->constrained()
+                ->constrained('users')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
             $table->enum('type', ['reaction', 'reply', 'mention', 'system']);
 
+            $table->string('message')->nullable();
+            
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Reaction;
 use Illuminate\Support\Facades\Auth;
+use App\Services\NotificationService;
 
 class MessageReactions extends Component
 {
@@ -32,21 +33,29 @@ class MessageReactions extends Component
             });
     }
 
-    public function addReaction($reaction)
+    public function addReaction($reaction, NotificationService $notificationService)
     {
         if (!Auth::check()) {
             return redirect()->route('auth');
         }
 
-        Reaction::where('sender_id', Auth::id())
+        Reaction::where('sender_id', auth()->id())
             ->where('message_id', $this->message->id)
             ->delete();
 
         Reaction::create([
-            'sender_id' => Auth::id(),
+            'sender_id' => auth()->id(),
             'message_id' => $this->message->id,
             'reaction' => $reaction
         ]);
+
+        $notificationService->createNotification(
+            sender_id: auth()->id(),
+            receiver_id: $this->message->sender->id,
+            type: 'reaction',
+            topicName: $this->message->topic->name,
+            reaction: $reaction
+        );
 
         $this->loadReactions();
     }

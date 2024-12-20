@@ -35,13 +35,11 @@ window.replyToMessage = function(messageId) {
     ];
     
     let authorName = null;
-    let authorId = null;
 
     for (let selector of usernameSelectors) {
         const element = message.querySelector(selector);
         if (element) {
             authorName = element.textContent.trim();
-            authorId = element.getAttribute('data-user-id');
             break;
         }
     }
@@ -56,14 +54,6 @@ window.replyToMessage = function(messageId) {
         receiverInput.type = 'hidden';
         receiverInput.name = 'receiver_username';
         receiverInput.value = authorName;
-        
-        if (authorId) {
-            const receiverIdInput = document.createElement('input');
-            receiverIdInput.type = 'hidden';
-            receiverIdInput.name = 'receiver_id';
-            receiverIdInput.value = authorId;
-            document.getElementById('message-form').appendChild(receiverIdInput);
-        }
 
         document.getElementById('message-form').appendChild(receiverInput);
 

@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         // User::factory()->create();
         // Category::factory()->count(10)->create();
         // Topic::factory()->count(10)->create();
-        // Message::factory()->count(10)->create();
-        // Achievement::factory()->count(10)->create();
+        Message::factory()->count(10)->create();
+        Achievement::factory()->count(10)->create();
     }
 }

@@ -8,6 +8,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Notification extends Model
 {
+    protected $fillable = [
+        'sender_id',
+        'receiver_id',
+        'type',
+        'message',
+        'read_at'
+    ];
+
+
     public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -17,4 +26,5 @@ class Notification extends Model
     {
         return $this->belongsTo(User::class);
     }
+
 }
