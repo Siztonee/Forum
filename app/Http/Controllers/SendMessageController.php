@@ -15,34 +15,19 @@ use App\Http\Requests\SendMessageRequest;
 
 class SendMessageController extends Controller
 {
-    protected NotificationService $notificationService;
-    protected StoreImageService $imageService;
-    protected HtmlPurifierService $htmlPurifierService;
-    protected HandleMentionsService $handleMentionsService;
-
-    public function __construct(
+    public function __invoke(
+        SendMessageRequest $request, 
         NotificationService $notificationService, 
         StoreImageService $imageService, 
         HtmlPurifierService $htmlPurifierService,
         HandleMentionsService $handleMentionsService
     ) {
-        $this->notificationService = $notificationService;
-        $this->imageService = $imageService;
-        $this->htmlPurifierService = $htmlPurifierService; 
-        $this->handleMentionsService = $handleMentionsService;
-    }
+        $contentWithStoredImages = $imageService->storeBase64Images($request->input('message'));
+        [$contentWithMentions, $mentionedUserIds] = $handleMentionsService->handle($contentWithStoredImages);
+        $cleanContent = $htmlPurifierService->purify($contentWithMentions);
 
-    public function __invoke(SendMessageRequest $request) 
-    {
-        $contentWithStoredImages = $this->imageService->storeBase64Images($request->input('message'));
-        $contentWithMentions = $this->handleMentionsService->handle($contentWithStoredImages);
-        $cleanContent = $this->htmlPurifierService->purify($contentWithMentions);
-        
-        $receiverId = null;
-        if ($request->input('receiver_username')) {
-            $receiver = User::where('username', $request->input('receiver_username'))->first();
-            $receiverId = $receiver ? $receiver->id : null;
-        }
+        $receiver = User::where('username', $request->input('receiver_username'))->first();
+        $receiverId = $receiver?->id;
 
         Message::create([
             'sender_id' => auth()->id(),
@@ -52,14 +37,36 @@ class SendMessageController extends Controller
         ]);
 
         $topic = Topic::findOrFail($request->topic_id);
-        $notificationReceiverId = $receiverId ?? $topic->creator->id;
 
-        $this->notificationService->createNotification(
-            sender_id: auth()->id(),
-            receiver_id: $notificationReceiverId,
-            type: 'reply',
-            topicName: $topic->name
-        );
+        $notificationReceiverIds = [];
+
+        if ($receiverId && $receiverId !== auth()->id()) { 
+            $notificationReceiverIds[] = $receiverId;
+        } elseif ($topic->creator->id !== auth()->id()) {
+            $notificationReceiverIds[] = $topic->creator->id;
+        }
+
+        foreach (array_unique($notificationReceiverIds) as $receiverId) {
+            $notificationService->createNotification(
+                sender_id: auth()->id(),
+                receiver_id: $receiverId,
+                type: 'reply',
+                topicName: $topic->name
+            );
+        }
+
+        foreach ($mentionedUserIds as $mentionedUserId) {
+            if ($mentionedUserId !== auth()->id() && 
+                !in_array($mentionedUserId, $notificationReceiverIds)) {
+                $notificationReceiverIds[] = $mentionedUserId;
+                $notificationService->createNotification(
+                    sender_id: auth()->id(),
+                    receiver_id: $mentionedUserId,
+                    type: 'mention',
+                    topicName: $topic->name
+                );
+            }
+        }
 
         return redirect()->route('category.topic', [$request->category_slug, $request->topic_slug])
             ->with('info', 'Сообщение отправлено.');

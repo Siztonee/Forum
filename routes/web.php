@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Message;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\HomeController;
@@ -9,17 +7,15 @@ use App\Http\Middleware\GuestMiddleware;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\TopicsController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ReactionController;
 use App\Http\Middleware\ModeratorMiddleware;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Middleware\Other\UpdateLastSeen;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\SendMessageController;
-use App\Http\Controllers\UploadImageController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Staff\CreateTopicController;
+use App\Http\Controllers\Staff\Panel\PanelController;
 use App\Http\Controllers\Staff\CreateCategoryController;
 use App\Http\Controllers\Staff\CategorySettingsController;
 
@@ -51,13 +47,15 @@ Route::middleware([AuthMiddleware::class])->group(function () {
 });
 
 
-Route::middleware([ModeratorMiddleware::class])->group(function () {
+Route::middleware([AuthMiddleware::class, ModeratorMiddleware::class])->group(function () {
     Route::get('/create-category', [CreateCategoryController::class, 'index'])->name('category.create');
     Route::post('/create-category', [CreateCategoryController::class, 'store'])->name('category.store');
     Route::get('/{slug}/settings', [CategorySettingsController::class, 'index'])->name('category.settings');
     Route::put('/{slug}/settings', [CategorySettingsController::class, 'store'])->name('category.settings.store');
     Route::delete('/{slug}/clear', [CategorySettingsController::class, 'clear'])->name('category.clear');
     Route::delete('/{slug}/delete', [CategorySettingsController::class, 'delete'])->name('category.delete');
+    Route::get('/panel', [PanelController::class, 'index'])->name('panel');
+    Route::get('/admin/statistics/users', [PanelController::class, 'getRegistrationStats'])->name('admin.statistics.users');
 });
 
 

@@ -17,6 +17,10 @@
     <!-- Header -->
     @include('layouts.header')
 
+    @if(Auth::check() && in_array(Auth::user()->role, ['admin', 'moderator']))
+        <x-staff.admin-sidebar />
+    @endif
+
     <!-- Main Content -->
     <main class="container mx-auto px-4 sm:px-6 lg:px-4 py-8">
         @if (session('info'))
@@ -31,6 +35,7 @@
 
     <script src="{{ asset('js/mobile-menu.js') }}"></script>
     <script src="{{ asset('js/notifications.js') }}"></script>
+    <script src="{{ asset('js/panel.js') }}"></script>
     @stack('scripts')
     
 </body>

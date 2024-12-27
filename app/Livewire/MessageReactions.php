@@ -25,6 +25,8 @@ class MessageReactions extends Component
 
     public function loadReactions()
     {
+        $this->message->load(['reactions', 'sender']);
+
         $this->reactions = $this->message->reactions()
             ->get()
             ->groupBy('reaction')
@@ -49,13 +51,15 @@ class MessageReactions extends Component
             'reaction' => $reaction
         ]);
 
-        $notificationService->createNotification(
-            sender_id: auth()->id(),
-            receiver_id: $this->message->sender->id,
-            type: 'reaction',
-            topicName: $this->message->topic->name,
-            reaction: $reaction
-        );
+        if ($this->message->sender->id !== auth()->id()) {
+            $notificationService->createNotification(
+                sender_id: auth()->id(),
+                receiver_id: $this->message->sender->id,
+                type: 'reaction',
+                topicName: $this->message->topic->name,
+                reaction: $reaction
+            );
+        }
 
         $this->loadReactions();
     }

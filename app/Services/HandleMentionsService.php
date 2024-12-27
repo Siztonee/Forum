@@ -6,17 +6,22 @@ use App\Models\User;
 
 class HandleMentionsService
 {
-    public function handle(string $content): string
+    public function handle(string $content): array
     {
-        return preg_replace_callback('/@(\w+)/', function ($matches) {
+        $mentionedUsers = [];
+
+        $content = preg_replace_callback('/@(\w+)/', function ($matches) use (&$mentionedUsers) {
             $username = $matches[1];
             $user = User::where('username', $username)->first();
 
             if ($user) {
-                return '<a href="' . route('profile', $username) . '" class="mention-link">@' . $username . '</a>';
+                $mentionedUsers[] = $user->id;
+                return view('components.username', ['user' => $user])->render();
             }
 
             return '@' . $username;
         }, $content);
+
+        return [$content, $mentionedUsers];
     }
 }
