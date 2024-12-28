@@ -1,5 +1,5 @@
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-6">
-    <a href="#" class="card"> 
+    <a href="http://127.0.0.1:8080/phpmyadmin/index.php?route=/database/structure&db=forum" target="_blank" class="card"> 
       <div class="p-5 bg-gray-900 rounded-lg border border-gray-700 hover:shadow-[0_0_1px_#fff,0_0_2px_#0088ff] transition-all duration-200">
         <div class="flex items-center">
           <div class="p-3 bg-yellow-500/10 rounded-lg flex items-center justify-center">
@@ -27,7 +27,7 @@
       </div>
     </a>
   
-    <a href="#" class="card"> 
+    <a href="{{ route('panel.users') }}" class="card"> 
       <div class="p-5 bg-gray-900 rounded-lg border border-gray-700 hover:shadow-[0_0_1px_#fff,0_0_2px_#0088ff] transition-all duration-200">
         <div class="flex items-center">
           <div class="p-3 bg-purple-500/10 rounded-lg flex items-center justify-center">

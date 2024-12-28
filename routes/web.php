@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Staff\Panel\Users;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\HomeController;
@@ -56,6 +57,7 @@ Route::middleware([AuthMiddleware::class, ModeratorMiddleware::class])->group(fu
     Route::delete('/{slug}/delete', [CategorySettingsController::class, 'delete'])->name('category.delete');
     Route::get('/panel', [PanelController::class, 'index'])->name('panel');
     Route::get('/admin/statistics/users', [PanelController::class, 'getRegistrationStats'])->name('admin.statistics.users');
+    Route::get('/panel/users', Users::class)->name('panel.users');
 });
 
 

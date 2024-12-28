@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Ban;
 use App\Models\Notification;
 use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
@@ -25,6 +26,8 @@ class User extends Authenticatable
         'username',
         'email',
         'profile_image',
+        'reputation',
+        'role',
         'email_verified_at',
         'password',
         'google_id',
@@ -66,5 +69,17 @@ class User extends Authenticatable
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class, 'receiver_id');
+    }
+
+    public function bans(): HasMany
+    {
+        return $this->hasMany(Ban::class);
+    }
+
+    public function isBanned()
+    {
+        return Ban::where('user_id', $this->id)
+                ->where('expires_at', '>', now())
+                ->first();
     }
 }
