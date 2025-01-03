@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\Other;
 
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class ModeratorMiddleware
+class CheckUserBanned
 {
     /**
      * Handle an incoming request.
@@ -16,8 +16,8 @@ class ModeratorMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!in_array(Auth::user()->role, ['admin', 'moderator'])) {
-            return redirect()->route('home')->with('error', 'Доступ запрещен');
+        if (Auth::check() && Auth::user()->isBanned()) {
+            abort(403, 'Ваш доступ заблокирован.');
         }
 
         return $next($request);

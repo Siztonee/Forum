@@ -9,14 +9,14 @@
                     Уведомления
                 </h1>
                 <span class="text-sm text-gray-400">
-                    {{ auth()->user()->notifications->count() }} 
-                    {{ trans_choice('уведомление|уведомления|уведомлений', auth()->user()->notifications->count()) }}
+                    {{ $notifications->count() }} 
+                    {{ trans_choice('уведомление|уведомления|уведомлений', $notifications->count()) }}
                 </span>
             </div>
 
             <!-- Notifications List -->
             <div class="space-y-3 sm:space-y-4">
-                @forelse(auth()->user()->notifications as $notification)
+                @forelse($notifications as $notification)
                     <div class="group relative bg-gray-800/50 hover:bg-gray-700/50 rounded-xl p-3 sm:p-4 transition-all duration-300 flex items-start sm:items-center gap-3 sm:gap-4">
                         <!-- Unread Indicator -->
                         @if (!$notification->read_at)
@@ -65,6 +65,7 @@
                         </p>
                     </div>
                 @endforelse
+                {{ $notifications->links() }}
             </div>
         </div>
     </div>

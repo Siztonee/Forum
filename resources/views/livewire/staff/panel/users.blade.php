@@ -1,3 +1,5 @@
+@section('title', 'Пользователи')
+
 <div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
     <!-- Заголовок и поиск -->
     <div class="mb-8 flex justify-between items-center">
@@ -112,6 +114,18 @@
                     </div>
                 </div>
 
+                <div>
+                    <label class="block text-gray-300 mb-2">Отправить уведомление:</label>
+                    <div class="flex space-x-2">
+                        <input wire:model="message" type="text"
+                            class="flex-1 bg-gray-800 text-gray-300 rounded px-3 py-2 border border-gray-600 focus:border-purple-500 focus:ring-purple-500">
+                        <button wire:click="sendNotification"
+                            class="bg-purple-600 hover:bg-purple-700 text-white rounded px-4 py-2 transition-colors">
+                            Отправить
+                        </button>
+                    </div>
+                </div>
+
                 @if($selectedUser->isBanned())
                     <div>
                         <div class="text-red-500 mb-4">
@@ -121,7 +135,7 @@
                             <div>Дата выдачи бана: {{ $selectedUser->isBanned()->created_at }}</div>
                             <div>Дата окончания бана: {{ $selectedUser->isBanned()->expires_at }}</div>
                         </div>
-                        <button wire:click="banUser"
+                        <button wire:click="unbanUser"
                             class="w-full bg-green-600 hover:bg-green-700 text-white rounded px-4 py-2 transition-colors">
                             Разбанить
                         </button>

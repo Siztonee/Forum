@@ -41,20 +41,6 @@
       </div>
     </a>
   
-    <a href="#" class="card"> 
-      <div class="p-5 bg-gray-900 rounded-lg border border-gray-700 hover:shadow-[0_0_1px_#fff,0_0_2px_#0088ff] transition-all duration-200">
-        <div class="flex items-center">
-          <div class="p-3 bg-green-500/10 rounded-lg flex items-center justify-center">
-            <i class="fas fa-chart-line fa-2x text-green-400"></i>
-          </div>
-          <div class="ml-4">
-            <h3 class="text-lg font-medium">Статистика</h3>
-            <p class="text-sm text-gray-400">Просмотр статистики форума</p>
-          </div>
-        </div>
-      </div>
-    </a>
-  
     <a href="{{ route('categories') }}" class="card"> 
       <div class="p-5 bg-gray-900 rounded-lg border border-gray-700 hover:shadow-[0_0_1px_#fff,0_0_2px_#0088ff] transition-all duration-200">
         <div class="flex items-center">
@@ -69,7 +55,7 @@
       </div>
     </a>
   
-    <a href="#" class="card"> 
+    {{-- <a href="#" class="card"> 
       <div class="p-5 bg-gray-900 rounded-lg border border-gray-700 hover:shadow-[0_0_1px_#fff,0_0_2px_#0088ff] transition-all duration-200">
         <div class="flex items-center">
           <div class="p-3 bg-green-500/10 rounded-lg flex items-center justify-center">
@@ -81,5 +67,6 @@
           </div>
         </div>
       </div>
-    </a>
-  </div>
+    </a> --}}
+    
+</div>

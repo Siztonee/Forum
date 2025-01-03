@@ -16,9 +16,6 @@ class Ban extends Model
         'expires_at'
     ];
 
-    protected $casts = [
-        'ban_days' => 'datetime', 
-    ];
 
     public function user(): BelongsTo
     {

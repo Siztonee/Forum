@@ -6,25 +6,15 @@ use App\Models\Ban;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Services\NotificationService;
 
 class Users extends Component
 {
-
     use WithPagination;
 
-    public $search = '';
-    public $selectedUser = null;
-    public $isModalOpen = false;
-    public $role = '';
-    public $reputation = 0;
-    public $banDays = 0;
-    public $banIp = false;
+    public $search, $selectedUser, $role, $message;
+    public $reputation = 0, $banDays = 1, $banIp = false, $isModalOpen = false;
 
-    protected $rules = [
-        'role' => 'required|in:user,moderator,admin',
-        'reputation' => 'required|numeric',
-        'banDays' => 'nullable|numeric|min:0',
-    ];
 
     public function mount()
     {
@@ -55,61 +45,75 @@ class Users extends Component
         $this->selectedUser = null;
         $this->role = '';
         $this->reputation = 0;
-        $this->banDays = 0;
+        $this->banDays = 1;
         $this->banIp = false;
         $this->resetValidation();
     }
 
     public function updateRole()
     {
-        $this->validate([
-            'role' => 'required|in:user,moderator,admin'
-        ]);
-
         $this->selectedUser->update(['role' => $this->role]);
-        $this->dispatch('success', 'Роль успешно обновлена');
+        $this->dispatch('success', ['message' => 'Роль успешно обновлена']);
     }
 
     public function updateReputation()
     {
-        $this->validate([
-            'reputation' => 'required|numeric'
-        ]);
-
         $this->selectedUser->update(['reputation' => $this->reputation]);
-        $this->dispatch('success', 'Репутация успешно обновлена');
+        $this->dispatch('success', ['message' => 'Репутация успешно обновлена']);
+    }
+
+    public function sendNotification(NotificationService $notificationService)
+    {
+        $notificationService->createNotification(
+            sender_id: auth()->id(),
+            receiver_id: $this->selectedUser->id,
+            type: 'system',
+            message: $this->message
+        );
+
+        $this->dispatch('success', ['message' => 'Уведомление успешно отправлено']);
+        $this->closeModal();
     }
 
     public function banUser()
     {
-        $validatedData = $this->validate([
-            'banDays' => 'required|min:1'
-        ]);
-
         Ban::create([
             'user_id' => $this->selectedUser->id,
             'ip' => request()->ip(),
             'reason' => 'Panel',
             'type' => $this->banIp ? 'ip' : 'account',
-            'expires_at' => now()->addDays((int)$validatedData['banDays'])
+            'expires_at' => now()->addDays((int)$this->banDays)
         ]);
 
-        $this->dispatch('info', 'Пользователь забанен');
+        $this->dispatch('success', ['message' => 'Пользователь забанен']);
+        $this->closeModal();
+    }
+
+    public function unbanUser()
+    {
+        $ban = Ban::where('user_id', $this->selectedUser->id)
+           ->where('expires_at', '>', now())
+           ->first();        
+
+        if ($ban) {
+            $ban->update(['expires_at' => now()]);
+            $this->dispatch('success', ['message' => 'Пользователь разбанен']);
+            $this->closeModal();
+        }
+        
         $this->closeModal();
     }
 
     public function deleteUser()
     {
-        // Здесь логика удаления пользователя
         $this->selectedUser->delete();
-        $this->dispatch('success', 'Пользователь удален');
+        $this->dispatch('success', ['message' => 'Пользователь удален']);
         $this->closeModal();
     }
 
     public function render()
     {
         $users = User::where('username', 'like', '%' . $this->search . '%')
-            ->orWhere('email', 'like', '%' . $this->search . '%')
             ->paginate(10);
 
         return view('livewire.staff.panel.users', [
